@@ -70,51 +70,170 @@ Bu proje, elektrikli araç telemetri sisteminin geliştirilmesi sürecinde edini
 - USB bağlantı kablosu
 - Bilgisayar (Windows/Linux/MacOS)
 
-## 🛠️ Kurulum
+## 🛠️ Kurulum ve Kullanım
 
-### 1. Python Ortamının Hazırlanması
+### 1. Projeyi İndirme
+```bash
+# Projeyi klonlayın
+git clone https://github.com/efekannn5/TelemetryBiltekBaru.git
+
+# Proje dizinine gidin
+cd TelemetryBiltekBaru
+```
+
+### 2. Gerekli Yazılımların Kurulumu
+
+#### Python Kurulumu
+```bash
+# Python 3.x'i indirin ve kurun
+# Windows için: https://www.python.org/downloads/
+# Linux için:
+sudo apt-get update
+sudo apt-get install python3 python3-pip
+```
+
+#### Gerekli Python Paketlerinin Kurulumu
 ```bash
 # Sanal ortam oluşturma (önerilen)
 python -m venv venv
-source venv/bin/activate  # Linux/MacOS
-venv\Scripts\activate     # Windows
 
-# Gerekli paketlerin yüklenmesi
+# Sanal ortamı aktifleştirme
+# Windows için:
+venv\Scripts\activate
+# Linux/MacOS için:
+source venv/bin/activate
+
+# Gerekli paketleri yükleme
 pip install -r requirements.txt
 ```
 
-### 2. Arduino Kurulumu
-1. Arduino IDE'yi yükleyin
-2. Gerekli kütüphaneleri yükleyin:
+#### Arduino IDE Kurulumu
+1. [Arduino IDE'yi indirin](https://www.arduino.cc/en/software)
+2. Kurulumu tamamlayın
+3. Gerekli kütüphaneleri yükleyin:
    - ArduinoJson
    - Wire
    - Adafruit_Sensor
-3. `arduino_code.ino` dosyasını açın
-4. Kart tipini ve port ayarlarını yapın
-5. Kodu yükleyin
 
-### 3. Yapılandırma
-1. `config.yml` dosyasını düzenleyin:
-   ```yaml
-   tunnel: e-car
-   credentials-file: /path/to/credentials.json
-   
-   ingress:
-     - hostname: ecar.efekannefesoglu.com
-       service: http://localhost:8000
-   ```
+### 3. Donanım Kurulumu
 
-2. `config.json` dosyasını kontrol edin:
-   ```json
-   {
-       "max_range": 400,
-       "battery_level": 80,
-       "arduino": {
-           "port": "/dev/ttyACM0",
-           "baudrate": 115200
-       }
-   }
-   ```
+#### Raspberry Pi Kurulumu
+1. [Raspberry Pi OS'u indirin](https://www.raspberrypi.org/software/)
+2. SD karta yazın
+3. Raspberry Pi'yi başlatın
+4. Sistem güncellemelerini yapın:
+```bash
+sudo apt-get update
+sudo apt-get upgrade
+```
+
+#### Ekran Kurulumu
+1. Waveshare ekranı Raspberry Pi'ye bağlayın
+2. Gerekli sürücüleri yükleyin:
+```bash
+sudo apt-get install -y python3-pip
+sudo pip3 install RPi.GPIO
+sudo pip3 install spidev
+```
+
+### 4. Yapılandırma
+
+#### Arduino Yapılandırması
+1. `arduino_code.ino` dosyasını Arduino IDE'de açın
+2. Kart tipini seçin (Arduino Mega 2560)
+3. Port ayarlarını yapın
+4. Kodu yükleyin
+
+#### Telemetri Sistemi Yapılandırması
+1. `config.json` dosyasını düzenleyin:
+```json
+{
+    "arduino": {
+        "port": "/dev/ttyACM0",  // Windows için "COM3" gibi
+        "baudrate": 115200
+    },
+    "display": {
+        "width": 1480,
+        "height": 320
+    }
+}
+```
+
+### 5. Çalıştırma
+
+#### Normal Mod
+```bash
+python main.py
+```
+
+#### Test Modu
+```bash
+python main.py -t
+```
+
+#### Otomatik Bağlantı
+```bash
+python main.py -a
+```
+
+#### Belirli Port ile Bağlantı
+```bash
+python main.py -p COM3  # Windows için
+python main.py -p /dev/ttyACM0  # Linux için
+```
+
+### 6. Uzaktan Erişim
+
+#### Cloudflare Tüneli Kurulumu
+1. Cloudflared'ı indirin:
+```bash
+# Windows için
+winget install Cloudflare.cloudflared
+
+# Linux için
+curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+sudo dpkg -i cloudflared.deb
+```
+
+2. Tüneli yapılandırın:
+```bash
+cloudflared tunnel login
+cloudflared tunnel create e-car
+```
+
+3. `config.yml` dosyasını düzenleyin:
+```yaml
+tunnel: e-car
+credentials-file: /path/to/credentials.json
+
+ingress:
+  - hostname: ecar.efekannefesoglu.com
+    service: http://localhost:8000
+```
+
+### 7. Sorun Giderme
+
+#### Yaygın Sorunlar ve Çözümleri
+
+1. **Arduino Bağlantı Hatası**
+   - Port numarasını kontrol edin
+   - Arduino IDE'de doğru kart seçili mi?
+   - USB kablosunu değiştirin
+
+2. **Ekran Sorunları**
+   - GPIO bağlantılarını kontrol edin
+   - Sürücülerin yüklü olduğundan emin olun
+   - Raspberry Pi'yi yeniden başlatın
+
+3. **Cloudflare Tüneli Sorunları**
+   - İnternet bağlantısını kontrol edin
+   - Kimlik bilgilerinin doğru olduğundan emin olun
+   - Tünel durumunu kontrol edin: `cloudflared tunnel list`
+
+4. **Python Paket Hataları**
+   - Sanal ortamın aktif olduğundan emin olun
+   - requirements.txt'yi güncelleyin
+   - pip'i güncelleyin: `pip install --upgrade pip`
 
 ## 📁 Proje Yapısı
 
