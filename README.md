@@ -18,7 +18,7 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında Efekan Nefesoğlu tara
 **Efekan Nefesoğlu**
 - Bartın Üniversitesi Bilgisayar Programcılığı Öğrencisi
 - BiltekBaru Elektrikli Araç Kulübü Üyesi
-- E-posta: efekan8190nefesoglu@gmail.com
+- E-posta: [efekan@nefesoglu.com](mailto:efekan@nefesoglu.com)
 - GitHub: [efekannn5](https://github.com/efekannn5)
 - LinkedIn: [Efekan Nefesoğlu](https://www.linkedin.com/in/efekan-nefesoğlu-b4552128b)
 
@@ -280,7 +280,7 @@ Bu proje CC0 (Creative Commons Zero) lisansı altında lisanslanmıştır. Bu li
 - Pull request açıklaması yazın
 
 ## 📞 İletişim ve Destek
-- **Geliştirici:** Efekan Nefesoğlu – <efekan8190nefesoglu@gmail.com>  
+- **Geliştirici:** Efekan Nefesoğlu – <efekan@nefesoglu.com>  
 - **Takım:** BiltekBaru Elektrikli Araç Kulübü – Bartın Üniversitesi  
 - **Proje Yöneticisi:** Efekan Nefesoğlu
 - **Teknik Danışman:** Efekan Nefesoğlu
