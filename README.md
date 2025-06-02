@@ -619,3 +619,272 @@ cloudflared tunnel run e-car
    - Performans profili
    - Bellek profili
    - Test araçları
+
+## 📝 Kod Örnekleri
+
+### Main.py
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+EV Dashboard - Ana Uygulama
+===========================
+EV (Elektrikli Araç) telemetri ekranı ana uygulaması.
+Raspberry Pi 4B üzerinde 1480x320 ekranda, Arduino'dan seri port üzerinden veri alarak çalışır.
+"""
+
+import sys
+import os
+import argparse
+import time
+import signal
+import json
+from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QPixmap, QIcon
+import threading
+from flask import Flask, jsonify
+import subprocess
+
+from dashboard_ui import Dashboard
+from arduino_serial import ArduinoSerial
+
+flask_app = Flask(__name__, static_folder='.')
+
+@flask_app.route('/', methods=['GET'])
+def index():
+    return flask_app.send_static_file('index.html')
+
+@flask_app.route('/telemetry', methods=['GET'])
+def get_telemetry():
+    if hasattr(flask_app, 'dashboard'):
+        data = flask_app.dashboard.get_telemetry_data()
+        return jsonify(data)
+    return jsonify({"error": "Dashboard nesnesi yok"})
+
+def start_flask_server():
+    flask_app.run(host='0.0.0.0', port=8000)
+
+def start_cloudflared_tunnel():
+    subprocess.Popen(['cloudflared', 'tunnel', 'run', 'e-car'])
+
+class EVDashboardApp:
+    def __init__(self):
+        try:
+            self.args = self.parse_arguments()
+            self.app = QApplication(sys.argv)
+            self.app.setApplicationName("EV Dashboard")
+            self.app.setOrganizationName("EV Team")
+            
+            signal.signal(signal.SIGINT, self.signal_handler)
+            self.show_splash_screen()
+            
+            try:
+                self.dashboard = Dashboard(test_mode=self.args.test)
+                
+                if not self.args.test:
+                    if self.args.auto:
+                        self.auto_connect()
+                    elif self.args.port:
+                        self.dashboard.connect_arduino(self.args.port, 115200)
+            except Exception as e:
+                print(f"Dashboard oluşturulurken hata: {e}")
+                self.dashboard = Dashboard(test_mode=True)
+                
+            threading.Thread(target=start_flask_server).start()
+            threading.Thread(target=start_cloudflared_tunnel).start()
+            flask_app.dashboard = self.dashboard
+                
+        except Exception as e:
+            print(f"Uygulama başlatılırken hata: {e}")
+            sys.exit(1)
+    
+    def parse_arguments(self):
+        parser = argparse.ArgumentParser(description="EV Dashboard uygulaması")
+        parser.add_argument("-t", "--test", action="store_true", 
+                           help="Test modu (Arduino bağlantısı olmadan)")
+        parser.add_argument("-a", "--auto", action="store_true", 
+                           help="Son başarılı bağlantı ayarları ile otomatik bağlan")
+        parser.add_argument("-p", "--port", default=None, 
+                           help="Belirli bir Arduino seri portu ile bağlan")
+        return parser.parse_args()
+    
+    def auto_connect(self):
+        try:
+            if os.path.exists('config.json'):
+                with open('config.json', 'r', encoding='utf-8') as f:
+                    config = json.load(f)
+                    
+                if 'arduino' in config and 'port' in config['arduino']:
+                    port = config['arduino']['port']
+                    baudrate = config['arduino'].get('baudrate', 115200)
+                    
+                    print(f"Son başarılı bağlantı bilgileri ile bağlanılıyor: {port}, {baudrate}")
+                    return self.dashboard.connect_arduino(port, baudrate)
+            
+            print("Daha önceki bağlantı bilgisi bulunamadı")
+            return False
+            
+        except Exception as e:
+            print(f"Otomatik bağlantı başarısız: {e}")
+            return False
+    
+    def show_splash_screen(self):
+        try:
+            splash_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 
+                                      "assets", "splash.png")
+            
+            if not os.path.exists(splash_path):
+                return
+                
+            splash_pixmap = QPixmap(splash_path)
+            splash = QSplashScreen(splash_pixmap)
+            splash.show()
+            splash.showMessage("EV Dashboard Başlatılıyor...", 
+                             Qt.AlignBottom | Qt.AlignCenter, Qt.white)
+            
+            self.app.processEvents()
+            time.sleep(2)
+            splash.close()
+        except Exception as e:
+            print(f"Splash ekranı gösterilirken hata: {e}")
+    
+    def signal_handler(self, sig, frame):
+        print("\nUygulamadan çıkılıyor...")
+        try:
+            if hasattr(self.dashboard, 'arduino') and self.dashboard.arduino:
+                self.dashboard.arduino.stop()
+        except Exception as e:
+            print(f"Bağlantı kapatılırken hata: {e}")
+        finally:
+            QApplication.quit()
+    
+    def run(self):
+        try:
+            if self.args.test:
+                QMessageBox.information(self.dashboard, "Test Modu", 
+                                    "Arduino bağlantısı olmadan test modunda çalışılıyor.\n"
+                                    "Sahte veriler kullanılacak.")
+                
+            return self.app.exec_()
+        except Exception as e:
+            print(f"Uygulama çalıştırılırken hata: {e}")
+            return 1
+
+if __name__ == "__main__":
+    try:
+        app = EVDashboardApp()
+        sys.exit(app.run())
+    except Exception as e:
+        print(f"Kritik hata: {e}")
+        sys.exit(1)
+
+```
+
+### Dashboard_ui.py
+```python
+class Dashboard(QMainWindow):
+    def __init__(self, test_mode=False):
+        super().__init__()
+        self.test_mode = test_mode
+        self.setWindowTitle("EV Dashboard")
+        self.setMinimumSize(1480, 320)
+        
+        # Ana widget ve layout
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.main_layout = QHBoxLayout(self.central_widget)
+        
+        # Panel oluşturma
+        self.create_left_side_panel()
+        self.create_center_panel()
+        self.create_right_side_panel()
+        
+        # Timer'ları ayarla
+        self.setup_timers()
+        
+        # Arduino bağlantısı
+        if not test_mode:
+            self.try_auto_connect()
+    
+    def create_left_side_panel(self):
+        # Sol panel bileşenleri
+        self.battery_indicator = BatteryIndicator()
+        self.temp_gauge = TemperatureGauge()
+        self.system_status = SystemStatus()
+    
+    def create_center_panel(self):
+        # Orta panel bileşenleri
+        self.speed_gauge = CircularGauge()
+        self.gear_indicator = GearIndicator()
+        self.main_info = MainInfo()
+    
+    def create_right_side_panel(self):
+        # Sağ panel bileşenleri
+        self.power_meter = PowerMeter()
+        self.park_sensor = ParkSensorVisual()
+        self.warning_indicators = WarningIndicators()
+    
+    def setup_timers(self):
+        # Veri güncelleme timer'ı
+        self.update_timer = QTimer()
+        self.update_timer.timeout.connect(self.update_data)
+        self.update_timer.start(100)  # 100ms
+        
+        # Bağlantı kontrol timer'ı
+        self.connection_timer = QTimer()
+        self.connection_timer.timeout.connect(self.check_connection_status)
+        self.connection_timer.start(1000)  # 1s
+    
+    def on_arduino_data(self, data):
+        # Arduino'dan gelen verileri işle
+        self.update_data(data)
+        self.log_telemetry_data(data)
+```
+
+### Kod Açıklamaları
+
+#### Main.py Açıklaması
+
+1. **Temel Yapı**
+   - Flask web sunucusu ve Cloudflare tüneli entegrasyonu
+   - PyQt5 tabanlı dashboard arayüzü
+   - Arduino seri port bağlantısı
+   - Çoklu thread desteği
+
+2. **Önemli Fonksiyonlar**
+   - `start_flask_server()`: Web sunucusunu başlatır
+   - `start_cloudflared_tunnel()`: Cloudflare tünelini başlatır
+   - `auto_connect()`: Otomatik Arduino bağlantısı
+   - `signal_handler()`: Güvenli kapatma işlemi
+
+3. **Başlatma Parametreleri**
+   - `-t/--test`: Test modu
+   - `-a/--auto`: Otomatik bağlantı
+   - `-p/--port`: Belirli port ile bağlantı
+
+#### Dashboard_ui.py Açıklaması
+
+1. **Panel Yapısı**
+   - Sol Panel: Batarya, sıcaklık ve sistem durumu
+   - Orta Panel: Hız, vites ve ana bilgi
+   - Sağ Panel: Güç, park sensörü ve uyarılar
+
+2. **Önemli Bileşenler**
+   - `CircularGauge`: Dairesel göstergeler
+   - `BatteryIndicator`: Pil durumu
+   - `TemperatureGauge`: Sıcaklık göstergeleri
+   - `PowerMeter`: Güç kullanımı
+
+3. **Veri Yönetimi**
+   - Timer tabanlı güncelleme
+   - Arduino veri işleme
+   - Log kaydı
+   - Hata kontrolü
+
+4. **Özellikler**
+   - Gerçek zamanlı veri akışı
+   - Animasyonlu geçişler
+   - Çoklu sensör desteği
+   - Uyarı sistemi
