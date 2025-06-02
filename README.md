@@ -1,6 +1,6 @@
 # TelemetryBiltekBaru
 
-Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında Efekan Nefesoğlu tarafından geliştirilen elektrikli araç telemetri ve veri izleme sistemidir. Proje, aracın performans verilerini gerçek zamanlı olarak izlemek, kaydetmek ve görselleştirmek için tasarlanmıştır.
+Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında `Efekan Nefesoğlu` tarafından geliştirilen elektrikli araç telemetri ve veri izleme sistemidir. Proje, aracın performans verilerini gerçek zamanlı olarak izlemek, kaydetmek ve görselleştirmek için tasarlanmıştır.
 
 ## 💻 Donanım Özellikleri
 
@@ -401,8 +401,6 @@ Bu proje CC0 (Creative Commons Zero) lisansı altında lisanslanmıştır. Bu li
 ## 📞 İletişim ve Destek
 - **Geliştirici:** Efekan Nefesoğlu – <efekan@nefesoglu.com>  
 - **Takım:** BiltekBaru Elektrikli Araç Kulübü – Bartın Üniversitesi  
-- **Proje Yöneticisi:** Efekan Nefesoğlu
-- **Teknik Danışman:** Efekan Nefesoğlu
 
 ### GitHub
 - Sorularınız veya önerileriniz için GitHub üzerinden issue açabilirsiniz
@@ -416,8 +414,7 @@ Bu proje CC0 (Creative Commons Zero) lisansı altında lisanslanmıştır. Bu li
 
 ## 🔄 Güncellemeler
 
-### v1.0.0 (Efekan Nefesoğlu)
-- İlk sürüm
+### v18.7.43 (Efekan Nefesoğlu)
 - Temel telemetri özellikleri
 - Dashboard arayüzü
 - Arduino entegrasyonu
