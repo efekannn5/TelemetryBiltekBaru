@@ -1,6 +1,29 @@
 # TelemetryBiltekBaru
 
-Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında geliştirilen elektrikli araç telemetri ve veri izleme sistemidir. Proje, aracın performans verilerini gerçek zamanlı olarak izlemek, kaydetmek ve görselleştirmek için tasarlanmıştır.
+Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında Efekan Nefesoğlu tarafından geliştirilen elektrikli araç telemetri ve veri izleme sistemidir. Proje, aracın performans verilerini gerçek zamanlı olarak izlemek, kaydetmek ve görselleştirmek için tasarlanmıştır.
+
+## 💻 Donanım Özellikleri
+
+### Ana Sistem
+- **İşlemci:** Raspberry Pi 4B (2GB RAM)
+- **İşletim Sistemi:** Raspberry Pi OS (64-bit)
+- **Depolama:** 16GB MicroSD Kart 
+- **Ekran:** Waveshare 11.9inch Capacitive 320×1480 Touch Screen LCD Display
+- **Güç:** 5V/3A USB-C Güç Kaynağı
+- **Mikrodenetleyici:** Arduino Mega 2560
+
+
+## 👨‍💻 Geliştirici
+
+**Efekan Nefesoğlu**
+- Bartın Üniversitesi Bilgisayar Programcılığı Öğrencisi
+- BiltekBaru Elektrikli Araç Kulübü Üyesi
+- E-posta: efekan8190nefesoglu@gmail.com
+- GitHub: [efekannn5](https://github.com/efekannn5)
+- LinkedIn: [Efekan Nefesoğlu](www.linkedin.com/in/efekan-nefesoğlu-b4552128b)
+
+### Geliştirici Notları
+Bu proje, elektrikli araç telemetri sisteminin geliştirilmesi sürecinde edinilen deneyimler ve çözümler doğrultusunda oluşturulmuştur. Sistem, Raspberry Pi 4B üzerinde çalışacak şekilde optimize edilmiş ve gerçek zamanlı veri akışı için özel olarak tasarlanmıştır.
 
 ## 🚀 Özellikler
 
@@ -259,6 +282,8 @@ Bu proje CC0 (Creative Commons Zero) lisansı altında lisanslanmıştır. Bu li
 ## 📞 İletişim ve Destek
 - **Geliştirici:** Efekan Nefesoğlu – <efekan8190nefesoglu@gmail.com>  
 - **Takım:** BiltekBaru Elektrikli Araç Kulübü – Bartın Üniversitesi  
+- **Proje Yöneticisi:** Efekan Nefesoğlu
+- **Teknik Danışman:** Efekan Nefesoğlu
 
 ### GitHub
 - Sorularınız veya önerileriniz için GitHub üzerinden issue açabilirsiniz
@@ -272,14 +297,21 @@ Bu proje CC0 (Creative Commons Zero) lisansı altında lisanslanmıştır. Bu li
 
 ## 🔄 Güncellemeler
 
-### v1.0.0
+### v1.0.0 (Efekan Nefesoğlu)
 - İlk sürüm
 - Temel telemetri özellikleri
 - Dashboard arayüzü
 - Arduino entegrasyonu
+- Cloudflare tüneli entegrasyonu
+- Gerçek zamanlı veri izleme
+- Otomatik bağlantı sistemi
+- Hata yönetimi ve loglama
 
 ### Gelecek Özellikler
-- Web site gorsel iyileştirme
+- Web site görsel iyileştirme
+- Mobil uygulama desteği
+- Gelişmiş veri analizi
+- Yapay zeka destekli performans optimizasyonu
 
 ## 🌐 Uzaktan Erişim (Cloudflare Tüneli)
 
@@ -507,7 +539,7 @@ cloudflared tunnel run e-car
    -a, --auto    # Otomatik bağlantı
    -p, --port    # Belirli port ile bağlantı
    ```
-
+    
 2. **Başlangıç Kontrolleri**
    - Gerekli dosyaların varlığı
    - Port erişilebilirliği
