@@ -20,7 +20,7 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında Efekan Nefesoğlu tara
 - BiltekBaru Elektrikli Araç Kulübü Üyesi
 - E-posta: efekan8190nefesoglu@gmail.com
 - GitHub: [efekannn5](https://github.com/efekannn5)
-- LinkedIn: [Efekan Nefesoğlu](www.linkedin.com/in/efekan-nefesoğlu-b4552128b)
+- LinkedIn: [Efekan Nefesoğlu](https://www.linkedin.com/in/efekan-nefesoğlu-b4552128b)
 
 ### Geliştirici Notları
 Bu proje, elektrikli araç telemetri sisteminin geliştirilmesi sürecinde edinilen deneyimler ve çözümler doğrultusunda oluşturulmuştur. Sistem, Raspberry Pi 4B üzerinde çalışacak şekilde optimize edilmiş ve gerçek zamanlı veri akışı için özel olarak tasarlanmıştır.
