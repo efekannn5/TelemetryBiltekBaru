@@ -1,0 +1,7 @@
+tunnel: e-car
+credentials-file: /home/pi/.cloudflared/raspi-tunnel.json
+
+ingress:
+  - hostname: ecar.efekannefesoglu.com
+    service: http://localhost:8000
+  - service: http_status:404

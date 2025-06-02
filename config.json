@@ -1,0 +1,18 @@
+{
+    "max_range": 400,
+    "battery_level": 80,
+    "vehicle_settings": {
+        "default_climate_temp": 22,
+        "default_fan_speed": 3
+    },
+    "vehicle_data": {
+        "odometer": 12500,
+        "climate_temp": 22,
+        "outside_temp": 24,
+        "show_regen": false
+    },
+    "arduino": {
+        "port": "/dev/ttyACM0",
+        "baudrate": 115200
+    }
+}
