@@ -62,11 +62,7 @@ Bu proje, elektrikli araç telemetri sisteminin geliştirilmesi sürecinde edini
 
 ### Donanım Gereksinimleri
 - Arduino Mega veya benzeri mikrodenetleyici
-- Sensörler:
-  - Sıcaklık sensörleri
-  - Voltaj sensörleri
-  - Hız sensörü
-  - Akım sensörü
+- Arduino aracın CanBus sistemine bağlanıp oradan veri toplicak
 - USB bağlantı kablosu
 - Bilgisayar (Windows/Linux/MacOS)
 
