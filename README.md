@@ -12,6 +12,272 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında `Efekan Nefesoğlu` ta
 - **Güç:** 5V/3A USB-C Güç Kaynağı
 - **Mikrodenetleyici:** Arduino Mega 2560
 
+## 🛠️ Teknoloji Stack
+
+### Backend
+- **Python 3.x** - Ana programlama dili
+- **PyQt5** - Desktop GUI framework
+- **Flask** - Web framework
+- **PySerial** - Seri port iletişimi
+- **Threading** - Çoklu işlem yönetimi
+
+### Frontend (Web Arayüzü)
+- **HTML5** - Web yapısı
+- **CSS3** - Stil ve animasyonlar
+- **JavaScript** - İnteraktif özellikler
+- **Fetch API** - AJAX istekleri
+
+### Donanım İletişimi
+- **Seri Port Protokolü** - Arduino-Raspberry Pi iletişimi
+- **JSON** - Veri formatı
+- **CAN Bus** - Araç veri toplama (Arduino üzerinden)
+
+### Altyapı
+- **Cloudflare Tunnel** - Güvenli uzaktan erişim
+- **Systemd** - Servis yönetimi (Linux)
+- **Git** - Versiyon kontrolü
+
+## 🏗️ Sistem Mimarisi
+
+```mermaid
+graph TB
+    subgraph "Araç Sistemleri"
+        CAN["CAN Bus<br/>Araç Verileri"]
+        SENSORS["Sensörler<br/>• Motor Sıcaklığı<br/>• Batarya Durumu<br/>• Hız Sensörü"]
+    end
+    
+    subgraph "Veri Toplama Katmanı"
+        ARDUINO["Arduino Mega 2560<br/>• CAN Bus Okuma<br/>• Veri İşleme<br/>• JSON Formatı"]
+    end
+    
+    subgraph "Ana İşlem Katmanı"
+        RPI["Raspberry Pi 4B"]
+        SERIAL["Serial Reader<br/>• Veri Alma<br/>• Doğrulama<br/>• Buffer Yönetimi"]
+        DASHBOARD["Dashboard UI<br/>• PyQt5 Arayüzü<br/>• Gerçek Zamanlı Gösterim<br/>• Uyarı Sistemi"]
+        FLASK["Flask Web Server<br/>• API Endpoint'leri<br/>• Web Arayüzü<br/>• JSON Response"]
+        LOGGER["Logger System<br/>• Veri Kayıt<br/>• Hata Loglama<br/>• CSV/JSON Export"]
+    end
+    
+    subgraph "Uzaktan Erişim"
+        CLOUDFLARE["Cloudflare Tunnel<br/>• SSL/TLS Şifreleme<br/>• DNS Yönetimi<br/>• DDoS Koruması"]
+        WEB["Web Interface<br/>• HTML5/CSS3/JS<br/>• Responsive Design<br/>• Real-time Updates"]
+    end
+    
+    subgraph "Kullanıcılar"
+        LOCAL["Yerel Kullanıcı<br/>Dashboard Ekranı"]
+        REMOTE["Uzak Kullanıcılar<br/>Web Browser"]
+    end
+    
+    CAN --> ARDUINO
+    SENSORS --> ARDUINO
+    ARDUINO -->|USB Serial| SERIAL
+    SERIAL --> DASHBOARD
+    SERIAL --> FLASK
+    DASHBOARD --> LOCAL
+    FLASK --> LOGGER
+    FLASK --> CLOUDFLARE
+    CLOUDFLARE --> WEB
+    WEB --> REMOTE
+    
+    style ARDUINO fill:#ff9999
+    style RPI fill:#99ccff
+    style CLOUDFLARE fill:#99ff99
+    style WEB fill:#ffcc99
+```
+
+## 📊 Veri Formatı ve Protokol
+
+### Arduino Veri Paketi Formatı
+
+#### JSON Veri Şeması
+```json
+{
+  "speed": 60,                // Araç hızı (km/h) - Integer (0-220)
+  "battery_level": 75,        // Pil seviyesi (%) - Integer (0-100)
+  "battery_temp": 28,         // Pil sıcaklığı (°C) - Float (0-80)
+  "motor_temp": 42,           // Motor sıcaklığı (°C) - Float (0-120)
+  "power_usage": 15,          // Anlık güç kullanımı (kW) - Float (0-150)
+  "regen_power": 0,           // Rejeneratif frenleme gücü (kW) - Float (0-50)
+  "headlights": 1,            // Far durumu - Integer (0: kapalı, 1: kısa, 2: uzun)
+  "left_blind_spot": false,   // Sol kör nokta uyarısı - Boolean
+  "right_blind_spot": false,  // Sağ kör nokta uyarısı - Boolean
+  "aks_enabled": true,        // AKS aktif mi? - Boolean
+  "odometer": 12500,          // Kilometre sayacı - Integer (0-1000000)
+  "pack_voltage": 400,        // Batarya paketi voltajı (V) - Float
+  "min_cell_voltage": 3.15,   // Minimum hücre voltajı (V) - Float
+  "max_cell_voltage": 4.21,   // Maksimum hücre voltajı (V) - Float
+  "instant_power": 20,        // Anlık güç (kW) - Float
+  "average_power": 15         // Ortalama güç (kW) - Float
+}
+```
+
+#### Veri İletişim Protokolü
+- **Format:** JSON over Serial
+- **Baudrate:** 115200 bps
+- **Delimiter:** Her veri paketi `#END#` ile sonlandırılır
+- **Encoding:** UTF-8
+- **Timeout:** 1 saniye
+- **Buffer Size:** 4096 bytes
+
+### API Endpoint'leri
+
+#### 1. Ana Sayfa
+- **URL:** `/`
+- **Method:** GET
+- **Description:** Web dashboard arayüzünü döndürür
+- **Response:** HTML sayfa
+
+#### 2. Telemetri Verileri
+- **URL:** `/telemetry`
+- **Method:** GET
+- **Description:** En güncel telemetri verilerini JSON formatında döndürür
+- **Response Format:**
+```json
+{
+  "timestamp": "2025-01-15T10:30:45.123Z",
+  "data": {
+    "speed": 60,
+    "battery_level": 75,
+    "battery_temp": 28,
+    "motor_temp": 42,
+    "power_usage": 15,
+    "regen_power": 0,
+    "headlights": 1,
+    "left_blind_spot": false,
+    "right_blind_spot": false,
+    "aks_enabled": true,
+    "odometer": 12500,
+    "pack_voltage": 400,
+    "min_cell_voltage": 3.15,
+    "max_cell_voltage": 4.21,
+    "instant_power": 20,
+    "average_power": 15
+  },
+  "warnings": [
+    {
+      "type": "warning",
+      "message": "Batarya sıcaklığı yüksek",
+      "value": 55,
+      "threshold": 60
+    }
+  ]
+}
+```
+
+#### 3. Sistem Durumu
+- **URL:** `/status`
+- **Method:** GET
+- **Description:** Sistem durumu ve bağlantı bilgileri
+- **Response Format:**
+```json
+{
+  "arduino_connected": true,
+  "last_data_time": "2025-01-15T10:30:45.123Z",
+  "uptime": "2h 15m 30s",
+  "memory_usage": "45%",
+  "cpu_usage": "12%"
+}
+```
+
+## 📈 Performans ve Gereksinimler
+
+### Sistem Gereksinimleri
+
+#### Minimum Gereksinimler
+- **RAM:** 1GB (2GB önerilen)
+- **Depolama:** 8GB MicroSD Kart
+- **İşlemci:** ARM Cortex-A72 (Raspberry Pi 4)
+- **USB Port:** 1x USB 2.0/3.0
+- **Ağ:** WiFi veya Ethernet
+
+#### Performans Metrikleri
+- **Veri İşleme Hızı:** ~100 veri paketi/saniye
+- **Yanıt Süresi:** <50ms (Web API)
+- **Bellek Kullanımı:** ~200MB (Dashboard + Web Server)
+- **CPU Kullanımı:** ~15% (normal çalışma)
+- **Ağ Trafiği:** ~1KB/saniye (telemetri verisi)
+
+### Optimizasyon İpuçları
+
+1. **Veri İşleme Optimizasyonu**
+   - Buffer boyutunu artırın (4KB → 8KB)
+   - Threading kullanarak paralel işlem yapın
+   - Gereksiz veri doğrulamalarını azaltın
+
+2. **Bellek Optimizasyonu**
+   - Log dosyası boyutunu sınırlayın (max 100MB)
+   - Eski log dosyalarını otomatik silin
+   - Garbage collection'u optimize edin
+
+3. **Ağ Optimizasyonu**
+   - Veri sıkıştırma kullanın
+   - Cache mekanizması ekleyin
+   - Batch veri işleme yapın
+
+## ❓ Sık Sorulan Sorular (FAQ)
+
+### Genel Sorular
+
+**S: Sistem kaç FPS ile çalışır?**
+A: Dashboard ~30 FPS, web arayüzü ~10 FPS güncelleme hızında çalışır.
+
+**S: Offline modda çalışabilir mi?**
+A: Evet, Arduino bağlantısı olmadan test modu ile çalışabilir.
+
+**S: Birden fazla kullanıcı aynı anda erişebilir mi?**
+A: Evet, web arayüzü çoklu kullanıcı desteği sağlar.
+
+### Teknik Sorular
+
+**S: Arduino bağlantısı koptuğunda ne olur?**
+A: Sistem otomatik yeniden bağlanmaya çalışır. Bağlantı kurulamadığında test verileri kullanılır.
+
+**S: Cloudflare tüneli neden kullanılıyor?**
+A: Güvenli uzaktan erişim, SSL sertifikası ve DDoS koruması için.
+
+**S: Veri kayıtları ne kadar süre saklanır?**
+A: Log dosyaları otomatik olarak 30 gün saklanır, sonra silinir.
+
+### Sorun Giderme
+
+**S: "Port bulunamadı" hatası alıyorum**
+A: 
+1. Arduino'nun bağlı olduğundan emin olun
+2. Doğru port numarasını kontrol edin (`ls /dev/tty*`)
+3. Kullanıcı izinlerini kontrol edin (`sudo usermod -a -G dialout $USER`)
+
+**S: Web arayüzü açılmıyor**
+A:
+1. Flask sunucusunun çalıştığını kontrol edin (`ps aux | grep python`)
+2. Port 8000'in açık olduğunu kontrol edin (`netstat -an | grep 8000`)
+3. Firewall ayarlarını kontrol edin
+
+**S: Veriler güncellenmedi**
+A:
+1. Arduino bağlantısını kontrol edin
+2. Serial port hızını kontrol edin (115200 bps)
+3. Log dosyalarını inceleyin (`tail -f logs/*.log`)
+
+### Geliştirme Soruları
+
+**S: Yeni sensör nasıl eklenir?**
+A: 
+1. Arduino koduna yeni sensör okuma ekleyin
+2. JSON formatına yeni alan ekleyin  
+3. Dashboard'da yeni gösterge oluşturun
+4. Web arayüzünde görselleştirme ekleyin
+
+**S: Özel uyarı nasıl eklenir?**
+A:
+1. `config.json`'a yeni eşik değerleri ekleyin
+2. `dashboard_ui.py`'da uyarı kontrolü ekleyin
+3. Uyarı mesajını tanımlayın
+
+**S: Farklı ekran çözünürlüğü nasıl desteklenir?**
+A:
+1. `config.json`'da display ayarlarını değiştirin
+2. CSS medya sorguları ekleyin
+3. PyQt5 widget'larının boyutlarını ayarlayın
 
 ## 👨‍💻 Geliştirici
 
