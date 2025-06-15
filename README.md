@@ -100,60 +100,52 @@ graph TB
 
 ```mermaid
 graph LR
-    TELEM[🚗 TelemetryBiltekBaru<br/>Elektrikli Araç Sistemi]
+    TELEM[TelemetryBiltekBaru]
     
-    TELEM --> HARD[🔧 Donanım]
-    TELEM --> SOFT[💻 Yazılım] 
-    TELEM --> COMM[📡 İletişim]
-    TELEM --> DATA[📊 Veri]
-    TELEM --> USER[👥 Kullanıcı]
-    TELEM --> SEC[🔒 Güvenlik]
+    TELEM --> HARD[Donanım]
+    TELEM --> SOFT[Yazılım] 
+    TELEM --> COMM[İletişim]
+    TELEM --> DATA[Veri]
+    TELEM --> USER[Kullanıcı]
+    TELEM --> SEC[Güvenlik]
     
-    HARD --> RPI[Raspberry Pi 4B<br/>2GB RAM + 64bit OS]
-    HARD --> ARD[Arduino Mega 2560<br/>+ CAN Bus Shield]
-    HARD --> SCR[Dokunmatik Ekran<br/>1480x320 px]
-    HARD --> PWR[Güç Sistemi<br/>5V/3A USB-C]
+    HARD --> RPI[Raspberry Pi]
+    HARD --> ARD[Arduino Mega]
+    HARD --> SCR[Dokunmatik Ekran]
+    HARD --> PWR[Güç Sistemi]
     
-    SOFT --> PY[Python 3.x<br/>PyQt5 + Flask]
-    SOFT --> CPP[Arduino C++<br/>CAN + Serial]
-    SOFT --> WEB[HTML/CSS/JS<br/>Responsive]
-    SOFT --> SYS[Systemd<br/>Auto-start]
+    SOFT --> PY[Python Backend]
+    SOFT --> CPP[Arduino C++]
+    SOFT --> WEB[Web Frontend]
+    SOFT --> SYS[Sistem Servisi]
     
-    COMM --> CAN[CAN Bus<br/>250 kbps]
-    COMM --> SER[USB Serial<br/>115200 bps]
-    COMM --> NET[WiFi/Ethernet<br/>HTTP/HTTPS]
-    COMM --> CF[Cloudflare<br/>Tunnel SSL]
+    COMM --> CAN[CAN Bus]
+    COMM --> SER[USB Serial]
+    COMM --> NET[Network]
+    COMM --> CF[Cloudflare]
     
-    DATA --> COL[Veri Toplama<br/>Hız+Batarya+Sıcaklık]
-    DATA --> PRO[Veri İşleme<br/>Doğrulama+Filter]
-    DATA --> STO[Veri Saklama<br/>CSV+JSON Log]
-    DATA --> VIS[Görselleştirme<br/>Dashboard+Grafik]
+    DATA --> COL[Veri Toplama]
+    DATA --> PRO[Veri İşleme]
+    DATA --> STO[Veri Saklama]
+    DATA --> VIS[Görselleştirme]
     
-    USER --> LOC[Yerel Dashboard<br/>Dokunmatik Kontrol]
-    USER --> REM[Web Arayüzü<br/>Uzaktan Erişim]
-    USER --> MOB[Mobil Destek<br/>Responsive]
-    USER --> TEAM[Takım<br/>Teknisyen+Analist]
+    USER --> LOC[Yerel Dashboard]
+    USER --> REM[Web Arayüzü]
+    USER --> MOB[Mobil Destek]
+    USER --> TEAM[Takım]
     
-    SEC --> SSL[Network<br/>SSL/TLS+DDoS]
-    SEC --> VAL[Veri Doğrulama<br/>Range Check]
-    SEC --> ERR[Hata Yönetimi<br/>Auto Recovery]
-    SEC --> LOG[Log Sistemi<br/>Monitoring]
+    SEC --> SSL[Network Güvenlik]
+    SEC --> VAL[Veri Doğrulama]
+    SEC --> ERR[Hata Yönetimi]
+    SEC --> LOG[Log Sistemi]
     
-    classDef center fill:#e1f5fe,stroke:#01579b,stroke-width:3px
-    classDef hardware fill:#ffebee,stroke:#c62828,stroke-width:2px
-    classDef software fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef communication fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
-    classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
-    classDef user fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-    classDef security fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+    classDef center fill:#f9f9f9,stroke:#333,stroke-width:3px,color:#000
+    classDef category fill:#f0f0f0,stroke:#666,stroke-width:2px,color:#000
+    classDef item fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
     
     class TELEM center
-    class HARD,RPI,ARD,SCR,PWR hardware
-    class SOFT,PY,CPP,WEB,SYS software
-    class COMM,CAN,SER,NET,CF communication
-    class DATA,COL,PRO,STO,VIS data
-    class USER,LOC,REM,MOB,TEAM user
-    class SEC,SSL,VAL,ERR,LOG security
+    class HARD,SOFT,COMM,DATA,USER,SEC category
+    class RPI,ARD,SCR,PWR,PY,CPP,WEB,SYS,CAN,SER,NET,CF,COL,PRO,STO,VIS,LOC,REM,MOB,TEAM,SSL,VAL,ERR,LOG item
 ```
 
 ## 📊 Veri Formatı ve Protokol
