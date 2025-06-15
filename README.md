@@ -96,6 +96,154 @@ graph TB
     style REMOTE fill:#004684
 ```
 
+## 🧠 Proje Zihin Haritası
+
+```mermaid
+mindmap
+  root((TelemetryBiltekBaru))
+    Donanım
+      Raspberry Pi 4B
+        2GB RAM
+        64-bit OS
+        MicroSD 16GB
+        WiFi/Ethernet
+      Arduino Mega 2560
+        CAN Bus Shield
+        MCP2515 Modül
+        USB Serial
+        115200 bps
+      Ekran Sistemi
+        Waveshare 11.9"
+        1480x320 Çözünürlük
+        Dokunmatik Ekran
+        PyQt5 GUI
+      Güç Yönetimi
+        5V/3A USB-C
+        Araç 12V Adaptör
+        UPS Backup
+    
+    Yazılım Stack
+      Backend
+        Python 3.x
+        PyQt5 Framework
+        Flask Web Server
+        Threading
+        JSON İşleme
+      Frontend
+        HTML5/CSS3
+        JavaScript
+        Responsive Design
+        Real-time Updates
+      Arduino
+        C++ Kod
+        CAN Bus Okuma
+        JSON Üretimi
+        Seri İletişim
+      Sistem Servisleri
+        Systemd
+        Auto-start
+        Log Rotation
+        Error Recovery
+    
+    İletişim Protokolleri
+      CAN Bus
+        250 kbps Hız
+        ECU Bağlantısı
+        Motor Verileri
+        Batarya Verileri
+        Şasi Verileri
+        Gövde Verileri
+      Seri Port
+        USB Bağlantı
+        115200 Baudrate
+        JSON Format
+        Error Handling
+      Network
+        WiFi/Ethernet
+        HTTP/HTTPS
+        WebSocket
+        REST API
+        Cloudflare Tunnel
+    
+    Kullanıcılar
+      Yerel Kullanım
+        Dashboard Ekranı
+        Gerçek Zamanlı Veri
+        Dokunmatik Kontrol
+        Uyarı Sistemi
+      Uzaktan Erişim
+        Web Arayüzü
+        Takım Üyeleri
+        Teknisyenler
+        Veri Analisti
+      Mobil Destek
+        Responsive Design
+        Tablet Uyumlu
+        Telefon Uyumlu
+    
+    Veri Yönetimi
+      Veri Toplama
+        Hız Bilgisi
+        Batarya Durumu
+        Sıcaklık Verileri
+        Güç Kullanımı
+        Voltaj Bilgileri
+      Veri İşleme
+        Doğrulama
+        Filtreleme
+        Range Kontrol
+        Error Correction
+      Veri Saklama
+        CSV Logları
+        JSON Format
+        Günlük Dosyalar
+        Otomatik Temizlik
+      Veri Görselleştirme
+        Gerçek Zamanlı Grafikler
+        Gauge Göstergeleri
+        Uyarı Panelleri
+        Trend Analizi
+    
+    Güvenlik
+      Network Güvenliği
+        SSL/TLS Şifreleme
+        Cloudflare Koruması
+        DDoS Önleme
+        Firewall
+      Veri Güvenliği
+        Input Validation
+        Range Checking
+        Error Handling
+        Safe Defaults
+      Sistem Güvenliği
+        Auto Recovery
+        Watchdog Timer
+        Backup Systems
+        Log Monitoring
+    
+    Geliştirme
+      Araçlar
+        Git Version Control
+        Arduino IDE
+        Python IDE
+        GitHub Repository
+      Test Sistemleri
+        Test Modu
+        Dummy Data
+        Unit Tests
+        Integration Tests
+      Dokümantasyon
+        README.md
+        Code Comments
+        API Documentation
+        User Manual
+      CI/CD
+        Automated Testing
+        Deployment Scripts
+        Version Management
+        Release Notes
+```
+
 ## 📊 Veri Formatı ve Protokol
 
 ### Arduino Veri Paketi Formatı
