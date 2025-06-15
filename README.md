@@ -100,149 +100,125 @@ graph TB
 
 ```mermaid
 mindmap
-  root((TelemetryBiltekBaru))
-    Donanım
+  root((TelemetryBiltekBaru<br/>Elektrikli Araç<br/>Telemetri Sistemi))
+    🔧 Donanım
       Raspberry Pi 4B
-        2GB RAM
-        64-bit OS
-        MicroSD 16GB
-        WiFi/Ethernet
       Arduino Mega 2560
-        CAN Bus Shield
-        MCP2515 Modül
-        USB Serial
-        115200 bps
-      Ekran Sistemi
-        Waveshare 11.9"
-        1480x320 Çözünürlük
-        Dokunmatik Ekran
-        PyQt5 GUI
-      Güç Yönetimi
-        5V/3A USB-C
-        Araç 12V Adaptör
-        UPS Backup
+      CAN Bus Shield
+      Dokunmatik Ekran
+      Güç Sistemi
     
-    Yazılım Stack
-      Backend
-        Python 3.x
-        PyQt5 Framework
-        Flask Web Server
-        Threading
-        JSON İşleme
-      Frontend
-        HTML5/CSS3
-        JavaScript
-        Responsive Design
-        Real-time Updates
-      Arduino
-        C++ Kod
-        CAN Bus Okuma
-        JSON Üretimi
-        Seri İletişim
-      Sistem Servisleri
-        Systemd
-        Auto-start
-        Log Rotation
-        Error Recovery
+    💻 Yazılım
+      Python Backend
+      PyQt5 Dashboard  
+      Flask Web Server
+      Arduino C++
+      HTML/CSS/JS
     
-    İletişim Protokolleri
-      CAN Bus
-        250 kbps Hız
-        ECU Bağlantısı
-        Motor Verileri
-        Batarya Verileri
-        Şasi Verileri
-        Gövde Verileri
-      Seri Port
-        USB Bağlantı
-        115200 Baudrate
-        JSON Format
-        Error Handling
-      Network
-        WiFi/Ethernet
-        HTTP/HTTPS
-        WebSocket
-        REST API
-        Cloudflare Tunnel
+    📡 İletişim
+      CAN Bus Protocol
+      USB Serial
+      WiFi/Ethernet
+      Cloudflare Tunnel
+      JSON Format
     
-    Kullanıcılar
-      Yerel Kullanım
-        Dashboard Ekranı
-        Gerçek Zamanlı Veri
-        Dokunmatik Kontrol
-        Uyarı Sistemi
-      Uzaktan Erişim
-        Web Arayüzü
-        Takım Üyeleri
-        Teknisyenler
-        Veri Analisti
+    👥 Kullanıcılar
+      Yerel Dashboard
+      Web Arayüzü
+      Takım Üyeleri
+      Teknisyenler
       Mobil Destek
-        Responsive Design
-        Tablet Uyumlu
-        Telefon Uyumlu
     
-    Veri Yönetimi
+    📊 Veri Sistemi
       Veri Toplama
-        Hız Bilgisi
-        Batarya Durumu
-        Sıcaklık Verileri
-        Güç Kullanımı
-        Voltaj Bilgileri
       Veri İşleme
-        Doğrulama
-        Filtreleme
-        Range Kontrol
-        Error Correction
       Veri Saklama
-        CSV Logları
-        JSON Format
-        Günlük Dosyalar
-        Otomatik Temizlik
-      Veri Görselleştirme
-        Gerçek Zamanlı Grafikler
-        Gauge Göstergeleri
-        Uyarı Panelleri
-        Trend Analizi
+      Görselleştirme
+      Analiz Araçları
     
-    Güvenlik
+    🔒 Güvenlik
       Network Güvenliği
-        SSL/TLS Şifreleme
-        Cloudflare Koruması
-        DDoS Önleme
-        Firewall
-      Veri Güvenliği
-        Input Validation
-        Range Checking
-        Error Handling
-        Safe Defaults
-      Sistem Güvenliği
-        Auto Recovery
-        Watchdog Timer
-        Backup Systems
-        Log Monitoring
+      Veri Doğrulama
+      Hata Yönetimi
+      Sistem Kurtarma
+      Log Sistemi
     
-    Geliştirme
-      Araçlar
-        Git Version Control
-        Arduino IDE
-        Python IDE
-        GitHub Repository
-      Test Sistemleri
-        Test Modu
-        Dummy Data
-        Unit Tests
-        Integration Tests
+    🛠️ Geliştirme
+      Git Repository
+      Test Sistemi
       Dokümantasyon
-        README.md
-        Code Comments
-        API Documentation
-        User Manual
-      CI/CD
-        Automated Testing
-        Deployment Scripts
-        Version Management
-        Release Notes
+      CI/CD Pipeline
+      Version Control
 ```
+
+### 📋 Detaylı Alt Bileşenler
+
+<details>
+<summary><strong>🔧 Donanım Bileşenleri</strong></summary>
+
+- **Raspberry Pi 4B**: 2GB RAM, 64-bit OS, MicroSD 16GB, WiFi/Ethernet
+- **Arduino Mega 2560**: CAN Bus Shield, MCP2515 Modül, USB Serial, 115200 bps
+- **Ekran Sistemi**: Waveshare 11.9", 1480x320 Çözünürlük, Dokunmatik
+- **Güç Yönetimi**: 5V/3A USB-C, Araç 12V Adaptör
+
+</details>
+
+<details>
+<summary><strong>💻 Yazılım Stack</strong></summary>
+
+- **Backend**: Python 3.x, PyQt5 Framework, Flask Web Server, Threading
+- **Frontend**: HTML5/CSS3, JavaScript, Responsive Design, Real-time Updates  
+- **Arduino**: C++ Kod, CAN Bus Okuma, JSON Üretimi, Seri İletişim
+- **Sistem**: Systemd, Auto-start, Log Rotation, Error Recovery
+
+</details>
+
+<details>
+<summary><strong>📡 İletişim Protokolleri</strong></summary>
+
+- **CAN Bus**: 250 kbps Hız, ECU Bağlantısı, Motor/Batarya/Şasi/Gövde Verileri
+- **Seri Port**: USB Bağlantı, 115200 Baudrate, JSON Format, Error Handling
+- **Network**: WiFi/Ethernet, HTTP/HTTPS, WebSocket, REST API, Cloudflare Tunnel
+
+</details>
+
+<details>
+<summary><strong>👥 Kullanıcı Arayüzleri</strong></summary>
+
+- **Yerel**: Dashboard Ekranı, Gerçek Zamanlı Veri, Dokunmatik Kontrol, Uyarı Sistemi
+- **Uzaktan**: Web Arayüzü, Takım Üyeleri, Teknisyenler, Veri Analisti
+- **Mobil**: Responsive Design, Tablet/Telefon Uyumlu
+
+</details>
+
+<details>
+<summary><strong>📊 Veri Yönetimi</strong></summary>
+
+- **Toplama**: Hız, Batarya Durumu, Sıcaklık, Güç Kullanımı, Voltaj
+- **İşleme**: Doğrulama, Filtreleme, Range Kontrol, Error Correction
+- **Saklama**: CSV Logları, JSON Format, Günlük Dosyalar, Otomatik Temizlik
+- **Görselleştirme**: Real-time Grafikler, Gauge'ler, Uyarı Panelleri, Trend Analizi
+
+</details>
+
+<details>
+<summary><strong>🔒 Güvenlik Sistemi</strong></summary>
+
+- **Network**: SSL/TLS Şifreleme, Cloudflare Koruması, DDoS Önleme, Firewall
+- **Veri**: Input Validation, Range Checking, Error Handling, Safe Defaults
+- **Sistem**: Auto Recovery, Watchdog Timer, Backup Systems, Log Monitoring
+
+</details>
+
+<details>
+<summary><strong>🛠️ Geliştirme Araçları</strong></summary>
+
+- **Araçlar**: Git Version Control, Arduino IDE, Python IDE, GitHub Repository  
+- **Test**: Test Modu, Dummy Data, Unit Tests, Integration Tests
+- **Dokümantasyon**: README.md, Code Comments, API Documentation, User Manual
+- **CI/CD**: Automated Testing, Deployment Scripts, Version Management
+
+</details>
 
 ## 📊 Veri Formatı ve Protokol
 
