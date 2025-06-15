@@ -90,7 +90,7 @@ graph TB
     
     style ARDUINO fill:#911500
     style CAN fill:#020770
-    style CLOUDFLARE fill:#99ff99
+    style CLOUDFLARE fill:#004f16
     style WEB fill:#af6000
     style LOCAL fill:#c300e5
     style REMOTE fill:#004684
