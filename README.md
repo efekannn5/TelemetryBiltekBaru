@@ -48,7 +48,7 @@ graph TB
         CAN["CAN Bus Network<br/>🚗 Araç Ana Veri Yolu"]
         ECU1["Motor ECU<br/>• Motor Sıcaklığı<br/>• Motor RPM<br/>• Güç Kullanımı"]
         ECU2["Batarya ECU<br/>• Batarya Sıcaklığı<br/>• Hücre Voltajları<br/>• Şarj Durumu"]
-        ECU3["Şasi ECU<br/>• Araç Hızı<br/>• Fren Durumu<br/>• ABS/ESP"]
+        ECU3["Şasi ECU<br/>• Araç Hızı<br/>• Fren Durumu"]
         ECU4["Gövde ECU<br/>• Far Durumu<br/>• Kör Nokta<br/>• Park Sensörü"]
         
         ECU1 --> CAN
@@ -88,12 +88,12 @@ graph TB
     CLOUDFLARE -->|HTTPS<br/>ecar.efekannefesoglu.com| WEB
     WEB --> REMOTE
     
-    style ARDUINO fill:#ff9999
-    style CAN fill:#ffeb3b
+    style ARDUINO fill:#911500
+    style CAN fill:#020770
     style CLOUDFLARE fill:#99ff99
-    style WEB fill:#ffcc99
-    style LOCAL fill:#e1bee7
-    style REMOTE fill:#b3e5fc
+    style WEB fill:#af6000
+    style LOCAL fill:#c300e5
+    style REMOTE fill:#004684
 ```
 
 ## 📊 Veri Formatı ve Protokol
