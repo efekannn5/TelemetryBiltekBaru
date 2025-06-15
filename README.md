@@ -96,57 +96,6 @@ graph TB
     style REMOTE fill:#004684
 ```
 
-## 🧠 Proje Bileşenleri Haritası
-
-```mermaid
-graph LR
-    TELEM[TelemetryBiltekBaru]
-    
-    TELEM --> HARD[Donanım]
-    TELEM --> SOFT[Yazılım] 
-    TELEM --> COMM[İletişim]
-    TELEM --> DATA[Veri]
-    TELEM --> USER[Kullanıcı]
-    TELEM --> SEC[Güvenlik]
-    
-    HARD --> RPI[Raspberry Pi]
-    HARD --> ARD[Arduino Mega]
-    HARD --> SCR[Dokunmatik Ekran]
-    HARD --> PWR[Güç Sistemi]
-    
-    SOFT --> PY[Python Backend]
-    SOFT --> CPP[Arduino C++]
-    SOFT --> WEB[Web Frontend]
-    SOFT --> SYS[Sistem Servisi]
-    
-    COMM --> CAN[CAN Bus]
-    COMM --> SER[USB Serial]
-    COMM --> NET[Network]
-    COMM --> CF[Cloudflare]
-    
-    DATA --> COL[Veri Toplama]
-    DATA --> PRO[Veri İşleme]
-    DATA --> STO[Veri Saklama]
-    DATA --> VIS[Görselleştirme]
-    
-    USER --> LOC[Yerel Dashboard]
-    USER --> REM[Web Arayüzü]
-    USER --> MOB[Mobil Destek]
-    USER --> TEAM[Takım]
-    
-    SEC --> SSL[Network Güvenlik]
-    SEC --> VAL[Veri Doğrulama]
-    SEC --> ERR[Hata Yönetimi]
-    SEC --> LOG[Log Sistemi]
-    
-    classDef center fill:#f9f9f9,stroke:#333,stroke-width:3px,color:#000
-    classDef category fill:#f0f0f0,stroke:#666,stroke-width:2px,color:#000
-    classDef item fill:#ffffff,stroke:#999,stroke-width:1px,color:#000
-    
-    class TELEM center
-    class HARD,SOFT,COMM,DATA,USER,SEC category
-    class RPI,ARD,SCR,PWR,PY,CPP,WEB,SYS,CAN,SER,NET,CF,COL,PRO,STO,VIS,LOC,REM,MOB,TEAM,SSL,VAL,ERR,LOG item
-```
 
 ## 📊 Veri Formatı ve Protokol
 
