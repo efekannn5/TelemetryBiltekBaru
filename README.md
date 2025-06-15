@@ -96,129 +96,65 @@ graph TB
     style REMOTE fill:#004684
 ```
 
-## 🧠 Proje Zihin Haritası
+## 🧠 Proje Bileşenleri Haritası
 
 ```mermaid
-mindmap
-  root((TelemetryBiltekBaru<br/>Elektrikli Araç<br/>Telemetri Sistemi))
-    🔧 Donanım
-      Raspberry Pi 4B
-      Arduino Mega 2560
-      CAN Bus Shield
-      Dokunmatik Ekran
-      Güç Sistemi
+graph LR
+    TELEM[🚗 TelemetryBiltekBaru<br/>Elektrikli Araç Sistemi]
     
-    💻 Yazılım
-      Python Backend
-      PyQt5 Dashboard  
-      Flask Web Server
-      Arduino C++
-      HTML/CSS/JS
+    TELEM --> HARD[🔧 Donanım]
+    TELEM --> SOFT[💻 Yazılım] 
+    TELEM --> COMM[📡 İletişim]
+    TELEM --> DATA[📊 Veri]
+    TELEM --> USER[👥 Kullanıcı]
+    TELEM --> SEC[🔒 Güvenlik]
     
-    📡 İletişim
-      CAN Bus Protocol
-      USB Serial
-      WiFi/Ethernet
-      Cloudflare Tunnel
-      JSON Format
+    HARD --> RPI[Raspberry Pi 4B<br/>2GB RAM + 64bit OS]
+    HARD --> ARD[Arduino Mega 2560<br/>+ CAN Bus Shield]
+    HARD --> SCR[Dokunmatik Ekran<br/>1480x320 px]
+    HARD --> PWR[Güç Sistemi<br/>5V/3A USB-C]
     
-    👥 Kullanıcılar
-      Yerel Dashboard
-      Web Arayüzü
-      Takım Üyeleri
-      Teknisyenler
-      Mobil Destek
+    SOFT --> PY[Python 3.x<br/>PyQt5 + Flask]
+    SOFT --> CPP[Arduino C++<br/>CAN + Serial]
+    SOFT --> WEB[HTML/CSS/JS<br/>Responsive]
+    SOFT --> SYS[Systemd<br/>Auto-start]
     
-    📊 Veri Sistemi
-      Veri Toplama
-      Veri İşleme
-      Veri Saklama
-      Görselleştirme
-      Analiz Araçları
+    COMM --> CAN[CAN Bus<br/>250 kbps]
+    COMM --> SER[USB Serial<br/>115200 bps]
+    COMM --> NET[WiFi/Ethernet<br/>HTTP/HTTPS]
+    COMM --> CF[Cloudflare<br/>Tunnel SSL]
     
-    🔒 Güvenlik
-      Network Güvenliği
-      Veri Doğrulama
-      Hata Yönetimi
-      Sistem Kurtarma
-      Log Sistemi
+    DATA --> COL[Veri Toplama<br/>Hız+Batarya+Sıcaklık]
+    DATA --> PRO[Veri İşleme<br/>Doğrulama+Filter]
+    DATA --> STO[Veri Saklama<br/>CSV+JSON Log]
+    DATA --> VIS[Görselleştirme<br/>Dashboard+Grafik]
     
-    🛠️ Geliştirme
-      Git Repository
-      Test Sistemi
-      Dokümantasyon
-      CI/CD Pipeline
-      Version Control
+    USER --> LOC[Yerel Dashboard<br/>Dokunmatik Kontrol]
+    USER --> REM[Web Arayüzü<br/>Uzaktan Erişim]
+    USER --> MOB[Mobil Destek<br/>Responsive]
+    USER --> TEAM[Takım<br/>Teknisyen+Analist]
+    
+    SEC --> SSL[Network<br/>SSL/TLS+DDoS]
+    SEC --> VAL[Veri Doğrulama<br/>Range Check]
+    SEC --> ERR[Hata Yönetimi<br/>Auto Recovery]
+    SEC --> LOG[Log Sistemi<br/>Monitoring]
+    
+    classDef center fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    classDef hardware fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef software fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef communication fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+    classDef user fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef security fill:#f1f8e9,stroke:#558b2f,stroke-width:2px
+    
+    class TELEM center
+    class HARD,RPI,ARD,SCR,PWR hardware
+    class SOFT,PY,CPP,WEB,SYS software
+    class COMM,CAN,SER,NET,CF communication
+    class DATA,COL,PRO,STO,VIS data
+    class USER,LOC,REM,MOB,TEAM user
+    class SEC,SSL,VAL,ERR,LOG security
 ```
-
-### 📋 Detaylı Alt Bileşenler
-
-<details>
-<summary><strong>🔧 Donanım Bileşenleri</strong></summary>
-
-- **Raspberry Pi 4B**: 2GB RAM, 64-bit OS, MicroSD 16GB, WiFi/Ethernet
-- **Arduino Mega 2560**: CAN Bus Shield, MCP2515 Modül, USB Serial, 115200 bps
-- **Ekran Sistemi**: Waveshare 11.9", 1480x320 Çözünürlük, Dokunmatik
-- **Güç Yönetimi**: 5V/3A USB-C, Araç 12V Adaptör
-
-</details>
-
-<details>
-<summary><strong>💻 Yazılım Stack</strong></summary>
-
-- **Backend**: Python 3.x, PyQt5 Framework, Flask Web Server, Threading
-- **Frontend**: HTML5/CSS3, JavaScript, Responsive Design, Real-time Updates  
-- **Arduino**: C++ Kod, CAN Bus Okuma, JSON Üretimi, Seri İletişim
-- **Sistem**: Systemd, Auto-start, Log Rotation, Error Recovery
-
-</details>
-
-<details>
-<summary><strong>📡 İletişim Protokolleri</strong></summary>
-
-- **CAN Bus**: 250 kbps Hız, ECU Bağlantısı, Motor/Batarya/Şasi/Gövde Verileri
-- **Seri Port**: USB Bağlantı, 115200 Baudrate, JSON Format, Error Handling
-- **Network**: WiFi/Ethernet, HTTP/HTTPS, WebSocket, REST API, Cloudflare Tunnel
-
-</details>
-
-<details>
-<summary><strong>👥 Kullanıcı Arayüzleri</strong></summary>
-
-- **Yerel**: Dashboard Ekranı, Gerçek Zamanlı Veri, Dokunmatik Kontrol, Uyarı Sistemi
-- **Uzaktan**: Web Arayüzü, Takım Üyeleri, Teknisyenler, Veri Analisti
-- **Mobil**: Responsive Design, Tablet/Telefon Uyumlu
-
-</details>
-
-<details>
-<summary><strong>📊 Veri Yönetimi</strong></summary>
-
-- **Toplama**: Hız, Batarya Durumu, Sıcaklık, Güç Kullanımı, Voltaj
-- **İşleme**: Doğrulama, Filtreleme, Range Kontrol, Error Correction
-- **Saklama**: CSV Logları, JSON Format, Günlük Dosyalar, Otomatik Temizlik
-- **Görselleştirme**: Real-time Grafikler, Gauge'ler, Uyarı Panelleri, Trend Analizi
-
-</details>
-
-<details>
-<summary><strong>🔒 Güvenlik Sistemi</strong></summary>
-
-- **Network**: SSL/TLS Şifreleme, Cloudflare Koruması, DDoS Önleme, Firewall
-- **Veri**: Input Validation, Range Checking, Error Handling, Safe Defaults
-- **Sistem**: Auto Recovery, Watchdog Timer, Backup Systems, Log Monitoring
-
-</details>
-
-<details>
-<summary><strong>🛠️ Geliştirme Araçları</strong></summary>
-
-- **Araçlar**: Git Version Control, Arduino IDE, Python IDE, GitHub Repository  
-- **Test**: Test Modu, Dummy Data, Unit Tests, Integration Tests
-- **Dokümantasyon**: README.md, Code Comments, API Documentation, User Manual
-- **CI/CD**: Automated Testing, Deployment Scripts, Version Management
-
-</details>
 
 ## 📊 Veri Formatı ve Protokol
 
