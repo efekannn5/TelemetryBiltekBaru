@@ -11,6 +11,8 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında `Efekan Nefesoğlu` ta
 - **Ekran:** Waveshare 11.9inch Capacitive 320×1480 Touch Screen LCD Display
 - **Güç:** 5V/3A USB-C Güç Kaynağı
 - **Mikrodenetleyici:** Arduino Mega 2560
+- **CAN Bus Shield:** MCP2515 CAN Bus Modülü
+- **Bağlantı:** USB Serial (Arduino-RPi), CAN Bus (Arduino-Araç)
 
 ## 🛠️ Teknoloji Stack
 
@@ -28,9 +30,10 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında `Efekan Nefesoğlu` ta
 - **Fetch API** - AJAX istekleri
 
 ### Donanım İletişimi
-- **Seri Port Protokolü** - Arduino-Raspberry Pi iletişimi
-- **JSON** - Veri formatı
-- **CAN Bus** - Araç veri toplama (Arduino üzerinden)
+- **CAN Bus Protokolü** - Araç ECU'larından veri toplama (250 kbps)
+- **CAN Bus Shield** - Arduino için CAN Bus arayüzü
+- **Seri Port Protokolü** - Arduino-Raspberry Pi iletişimi (115200 bps)
+- **JSON** - Veri formatı ve Arduino-RPi protokolü
 
 ### Altyapı
 - **Cloudflare Tunnel** - Güvenli uzaktan erişim
@@ -41,17 +44,24 @@ Bu proje, TÜBİTAK Efficiency Challenge 2025 kapsamında `Efekan Nefesoğlu` ta
 
 ```mermaid
 graph TB
-    subgraph "Araç Sistemleri"
-        CAN["CAN Bus<br/>Araç Verileri"]
-        SENSORS["Sensörler<br/>• Motor Sıcaklığı<br/>• Batarya Durumu<br/>• Hız Sensörü"]
+    subgraph "Araç CAN Bus Sistemi"
+        CAN["CAN Bus Network<br/>🚗 Araç Ana Veri Yolu"]
+        ECU1["Motor ECU<br/>• Motor Sıcaklığı<br/>• Motor RPM<br/>• Güç Kullanımı"]
+        ECU2["Batarya ECU<br/>• Batarya Sıcaklığı<br/>• Hücre Voltajları<br/>• Şarj Durumu"]
+        ECU3["Şasi ECU<br/>• Araç Hızı<br/>• Fren Durumu<br/>• ABS/ESP"]
+        ECU4["Gövde ECU<br/>• Far Durumu<br/>• Kör Nokta<br/>• Park Sensörü"]
+        
+        ECU1 --> CAN
+        ECU2 --> CAN
+        ECU3 --> CAN
+        ECU4 --> CAN
     end
     
     subgraph "Veri Toplama Katmanı"
-        ARDUINO["Arduino Mega 2560<br/>• CAN Bus Okuma<br/>• Veri İşleme<br/>• JSON Formatı"]
+        ARDUINO["Arduino Mega 2560<br/>🔌 CAN Bus Shield<br/>• CAN Bus Okuma<br/>• Veri Filtreleme<br/>• JSON Formatı"]
     end
     
-    subgraph "Ana İşlem Katmanı"
-        RPI["Raspberry Pi 4B"]
+    subgraph "Ana İşlem Katmanı (Raspberry Pi 4B)"
         SERIAL["Serial Reader<br/>• Veri Alma<br/>• Doğrulama<br/>• Buffer Yönetimi"]
         DASHBOARD["Dashboard UI<br/>• PyQt5 Arayüzü<br/>• Gerçek Zamanlı Gösterim<br/>• Uyarı Sistemi"]
         FLASK["Flask Web Server<br/>• API Endpoint'leri<br/>• Web Arayüzü<br/>• JSON Response"]
@@ -60,29 +70,30 @@ graph TB
     
     subgraph "Uzaktan Erişim"
         CLOUDFLARE["Cloudflare Tunnel<br/>• SSL/TLS Şifreleme<br/>• DNS Yönetimi<br/>• DDoS Koruması"]
-        WEB["Web Interface<br/>• HTML5/CSS3/JS<br/>• Responsive Design<br/>• Real-time Updates"]
+        WEB["Web Interface<br/>📱 Responsive Design<br/>• HTML5/CSS3/JS<br/>• Real-time Updates"]
     end
     
     subgraph "Kullanıcılar"
-        LOCAL["Yerel Kullanıcı<br/>Dashboard Ekranı"]
-        REMOTE["Uzak Kullanıcılar<br/>Web Browser"]
+        LOCAL["🖥️ Yerel Kullanıcı<br/>Dashboard Ekranı<br/>1480x320 Display"]
+        REMOTE["🌐 Uzak Kullanıcılar<br/>Web Browser<br/>Takım & Teknisyenler"]
     end
     
-    CAN --> ARDUINO
-    SENSORS --> ARDUINO
-    ARDUINO -->|USB Serial| SERIAL
+    CAN -->|CAN Protocol<br/>250 kbps| ARDUINO
+    ARDUINO -->|USB Serial<br/>115200 bps<br/>JSON Format| SERIAL
     SERIAL --> DASHBOARD
     SERIAL --> FLASK
     DASHBOARD --> LOCAL
     FLASK --> LOGGER
     FLASK --> CLOUDFLARE
-    CLOUDFLARE --> WEB
+    CLOUDFLARE -->|HTTPS<br/>ecar.efekannefesoglu.com| WEB
     WEB --> REMOTE
     
     style ARDUINO fill:#ff9999
-    style RPI fill:#99ccff
+    style CAN fill:#ffeb3b
     style CLOUDFLARE fill:#99ff99
     style WEB fill:#ffcc99
+    style LOCAL fill:#e1bee7
+    style REMOTE fill:#b3e5fc
 ```
 
 ## 📊 Veri Formatı ve Protokol
@@ -327,10 +338,14 @@ Bu proje, elektrikli araç telemetri sisteminin geliştirilmesi sürecinde edini
 - Arduino IDE (Arduino kodları için)
 
 ### Donanım Gereksinimleri
-- Arduino Mega veya benzeri mikrodenetleyici
-- Arduino aracın CanBus sistemine bağlanıp oradan veri toplicak
-- USB bağlantı kablosu
-- Bilgisayar (Windows/Linux/MacOS)
+- Arduino Mega 2560 veya benzeri mikrodenetleyici
+- MCP2515 CAN Bus Shield (Arduino için)
+- CAN Bus kablosu (araç CAN Bus sistemine bağlantı için)
+- Arduino aracın CAN Bus sistemine CAN Shield üzerinden bağlanır
+- USB bağlantı kablosu (Arduino-Raspberry Pi arası)
+- Raspberry Pi 4B (2GB+ RAM önerilen)
+- MicroSD Kart (16GB+)
+- Dokunmatik ekran (1480x320 çözünürlük)
 
 ## 🛠️ Kurulum ve Kullanım
 
@@ -373,9 +388,10 @@ pip install -r requirements.txt
 1. [Arduino IDE'yi indirin](https://www.arduino.cc/en/software)
 2. Kurulumu tamamlayın
 3. Gerekli kütüphaneleri yükleyin:
-   - ArduinoJson
-   - Wire
-   - Adafruit_Sensor
+   - ArduinoJson (JSON veri işleme için)
+   - MCP2515 (CAN Bus iletişimi için)
+   - Wire (I2C iletişimi için)
+   - SPI (CAN Shield iletişimi için)
 
 ### 3. Donanım Kurulumu
 
